@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyse Boursière : {{ ticker }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+        .data-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #2c3e50; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Données Financières pour {{ ticker }}</h1>
+    
+    <form action="/" method="get">
+        <input type="text" name="ticker" placeholder="Ex: MSFT, GOOGL" required>
+        <button type="submit">Analyser</button>
+    </form>
+
+    <div class="data-card" style="margin-top: 20px;">
+        <p><strong>P/E Ratio (Cours/Bénéfice) :</strong> {{ pe }} (Doit être plus petit que 15)</p>
+        <p><strong>P/B Ratio (Cours/Valeur Comptable) :</strong> {{ pb }} (Doit être plus petit que 1.5)</p>
+    </div>
+
+    <h3>Free Cash Flow (FCF) - 4 derniers trimestres</h3>
+<p><small><i>Le FCF est l'argent restant après avoir payé les dépenses opérationnelles et les dépenses d'investissement (CAPEX).</i></small></p>
+<table>
+    <tr>
+        <th>Date du trimestre</th>
+        <th>Montant (FCF)</th>
+    </tr>
+    {% for date, valeur in cash_flow.items() %}
+    <tr>
+        <td>{{ date }}</td>
+        <td>
+            {{ "{:,.0f} $".format(valeur) if valeur is number else valeur }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
